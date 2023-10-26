@@ -180,6 +180,25 @@ module "application_load_balancer" {
   instance_2_id = module.instance_2.instance_id
 }
 
+/*
+
+    Creating ASG Auto Scalling Group using ASG module
+
+*/
+module "asg" {
+  source = "./modules/asg"
+  image_id = "ami-0550c2ee59485be53"
+  instance_type = "t2.micro"
+  key_name = "t2pem"
+  security_group = [module.nfs_server_sg.sg_id]
+  subnet_id = module.vpc.private_subnet_ids[1]
+  az = "us-east-1"
+  ebs_volume_size = 8
+  subnet_1 = module.vpc.private_subnet_ids[1]
+  subnet_2 = module.vpc.private_subnet_ids[0]
+  lba = module.application_load_balancer.alp_arn
+}
+
 module "bkp" {
   source = "./modules/backup"
   instance_1_id = [module.instance_1.instance_id]
