@@ -72,7 +72,7 @@ module "efs" {
   performance_mode = "maxIO"
   throughput_mode = "provisioned"
   transition_to_ia = "AFTER_30_DAYS"
-  subnet_ids = [module.vpc.public_subnet_ids[0], module.vpc.public_subnet_ids[1]]
+  subnet_ids = [module.vpc.private_subnet_ids[0], module.vpc.private_subnet_ids[1]]
   vpc_id = module.vpc.vpc_id
   nfs_port = 2049
   nfs_protocol = "tcp"
@@ -89,7 +89,7 @@ module "instance_1" {
   ami = "ami-0550c2ee59485be53"
   instance_type = "t3.micro"
   # counts = 1
-  subnet_id = module.vpc.public_subnet_ids[0]
+  subnet_id = module.vpc.private_subnet_ids[0]
   # subnet_id = module.vpc.private_subnets[1]
   root_volume_size  = 8
   root_volume_type  = "gp2"
@@ -104,7 +104,7 @@ module "instance_2" {
   ami = "ami-0550c2ee59485be53"
   instance_type = "t3.micro"
   # counts = 1
-  subnet_id = module.vpc.public_subnet_ids[1]
+  subnet_id = module.vpc.private_subnet_ids[1]
   root_volume_size  = 8
   root_volume_type  = "gp2"
   ebs_volume_size   = 20
