@@ -124,9 +124,9 @@ module "efs" {
   name = "abu-aubayda"
   creation_token = "my-efs-token"
   encrypted = true
-  provisioned_throughput_in_mibps = 1024
-  performance_mode = "maxIO"
-  throughput_mode = "provisioned"
+  # provisioned_throughput_in_mibps = 1024
+  performance_mode = "generalPurpose"
+  throughput_mode = "bursting"
   transition_to_ia = "AFTER_30_DAYS"
   subnet_ids = [module.vpc.private_subnet_ids[0], module.vpc.private_subnet_ids[1]]
   vpc_id = module.vpc.vpc_id

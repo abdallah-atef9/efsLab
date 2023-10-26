@@ -19,10 +19,10 @@ variable "encrypted" {
   description = "Whether to enable encryption for the EFS file system."
 }
 
-variable "provisioned_throughput_in_mibps" {
-  type        = number
-  description = "The throughput, measured in MiB/s, that you want to provision for the file system."
-}
+# variable "provisioned_throughput_in_mibps" {
+#   type        = number
+#   description = "The throughput, measured in MiB/s, that you want to provision for the file system."
+# }
 
 variable "performance_mode" {
   type        = string

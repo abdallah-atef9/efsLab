@@ -10,7 +10,7 @@ resource "aws_efs_file_system" "efs" {
     Name = var.name
   }
 
-  provisioned_throughput_in_mibps = var.provisioned_throughput_in_mibps
+  # provisioned_throughput_in_mibps = var.provisioned_throughput_in_mibps
   performance_mode                = var.performance_mode
   throughput_mode                 = var.throughput_mode
 
@@ -23,58 +23,30 @@ resource "aws_efs_mount_target" "mount_target" {
   count           = length(var.subnet_ids)
   file_system_id  = aws_efs_file_system.efs.id
   subnet_id       = var.subnet_ids[count.index]
-  security_groups = [aws_security_group.efs_sg.id]
+  security_groups = [module.nfs_sg.sg_id]
+}
+module "nfs_sg" {
+  source = "../sg"
+  prefix_name = "sg_"
+  vpc_id = var.vpc_id
 }
 
-resource "aws_security_group" "efs_sg" {
-  # name_prefix   = var.name_prefix
-  name_prefix = "sg_"
-  vpc_id        = var.vpc_id
-
-  ingress {
-    from_port   = var.nfs_port
-    to_port     = var.nfs_port
-    protocol    = var.nfs_protocol
-    cidr_blocks = [var.nfs_cidr_block]
-  }
-
-  egress {
-    from_port   = var.all_traffic_from_port
-    to_port     = var.all_traffic_to_port
-    protocol    = var.all_traffic_protocol
-    cidr_blocks = [var.all_traffic_cidr_block]
-  }
+module "nfs_ingress_sg_rule" {
+  source = "../sg_rule"
+  sg_rule_type = "ingress"
+  sg_id = module.nfs_sg.sg_id ## a variable in security group created in the module
+  from_port = var.nfs_port
+  to_port = var.nfs_port
+  protocol = var.nfs_protocol
+  cidr_block = var.nfs_cidr_block
 }
 
-output "efs_id" {
-  value       = aws_efs_file_system.efs.id
-  description = "The ID of the EFS file system."
+module "nfs_egress_sg_rule" {
+  source = "../sg_rule"
+  sg_rule_type = "egress"
+  sg_id = module.nfs_sg.sg_id ## a variable in security group created in the module
+  from_port = var.all_traffic_from_port
+  to_port = var.all_traffic_to_port
+  protocol = var.all_traffic_protocol
+  cidr_block = var.all_traffic_cidr_block
 }
-
-output "mount_target_dns_names" {
-  value       = aws_efs_mount_target.mount_target.*.dns_name
-  description = "A list of DNS names for the mount targets."
-}
-
-
-/*resource "aws_efs_file_system" "efs" {
-  creation_token = var.creation_token
-  performance_mode = var.performance_mode
-  throughput_mode = var.throughput_mode
-  encrypted = var.enc
-  tags = {
-    Name = var.creation_token
-  }
-}
-
-resource "aws_efs_mount_target" "mount_target_1" {
-  file_system_id = aws_efs_file_system.efs.id
-  subnet_id = aws_subnet.subnet_1.id
-  security_groups = [aws_security_group.sg.id]
-}
-
-resource "aws_efs_mount_target" "mount_target_2" {
-  file_system_id = aws_efs_file_system.efs.id
-  subnet_id = aws_subnet.subnet_2.id
-  security_groups = [aws_security_group.sg.id]
-}*/
