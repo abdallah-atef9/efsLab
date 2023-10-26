@@ -26,7 +26,3 @@ resource "aws_instance" "web" {
     volume_type = var.ebs_volume_type
   }
 }
-
-output "instance_id" {
-  value = aws_instance.web.id
-}
