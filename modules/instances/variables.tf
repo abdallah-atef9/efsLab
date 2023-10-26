@@ -14,10 +14,10 @@ variable "instance_type" {
   description = "The type of instance to launch."
 }
 
-variable "counts" {
-  type        = number
-  description = "The number of instances to launch."
-}
+# variable "counts" {
+#   type        = number
+#   description = "The number of instances to launch."
+# }
 
 variable "security_group_id" {
   type        = string

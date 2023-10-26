@@ -6,7 +6,7 @@ terraform {
 resource "aws_instance" "web" {
   ami           = var.ami
   instance_type = var.instance_type
-  count         = var.counts
+  # count         = var.counts
   tags = {
     Name = var.name
   }
@@ -27,6 +27,6 @@ resource "aws_instance" "web" {
   }
 }
 
-output "instance_ids" {
-  value = aws_instance.web.*.id
+output "instance_id" {
+  value = aws_instance.web.id
 }
