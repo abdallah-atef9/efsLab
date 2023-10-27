@@ -1,6 +1,6 @@
-terraform {
-  required_version = ">=0.12" # ate least 0.12
-}
+# terraform {
+#   required_version = ">=0.12" # ate least 0.12
+# }
 # modules/efs/main.tf
 resource "aws_efs_file_system" "efs" {
   creation_token = var.creation_token

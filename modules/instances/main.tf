@@ -1,6 +1,6 @@
-terraform {
-  required_version = ">=0.12" # ate least 0.12
-}
+# terraform {
+#   required_version = ">=0.12" # ate least 0.12
+# }
 
 # modules/instances/main.tf
 resource "aws_instance" "web" {
@@ -10,7 +10,7 @@ resource "aws_instance" "web" {
   tags = {
     Name = var.name
   }
-  key_name = "000"
+  key_name = "t2pem"
 
   vpc_security_group_ids = [var.security_group_id]
   subnet_id              = var.subnet_id
@@ -26,3 +26,15 @@ resource "aws_instance" "web" {
     volume_type = var.ebs_volume_type
   }
 }
+
+
+# output "instance_ids" {
+#   value = aws_instance.web.id
+#   # value       = aws_instance.web.*.id
+#   description = "A list of IDs for the instances."
+# }
+
+
+# output "instance_id" {
+#   value = aws_instance.web.id
+# }

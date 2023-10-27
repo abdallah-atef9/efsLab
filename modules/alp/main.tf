@@ -38,8 +38,9 @@ resource "aws_lb" "lb" {
 #   vpc_id = var.vpc_id
 #   subnets            = [for subnet in aws_subnet.public : subnet.id]
   subnets = var.subnets
-  enable_deletion_protection = true
+  enable_deletion_protection = false
   tags = {
     Environment = "lab-2"
   }
 }
+

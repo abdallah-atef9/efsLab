@@ -5,7 +5,10 @@ variable "name" {
   type        = string
   description = "The name of the VPC."
 }
-
+variable "availability_zones" {
+  type    = list(string)
+  default = ["us-east-1a", "us-east-1b"]
+}
 variable "cidr_block" {
   type        = string
   description = "The CIDR block for the VPC."

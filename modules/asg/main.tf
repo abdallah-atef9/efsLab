@@ -12,12 +12,12 @@ resource "aws_launch_template" "foo" {
   key_name = var.key_name
   user_data = base64encode(data.template_file.instances_user_data.rendered)
   # user_data = filebase64("${path.module}/ec2-init.sh")
-  vpc_security_group_ids = var.security_group ## attach to this variable "[module.nfs_server_sg.sg_id]"
+  # vpc_security_group_ids = var.security_group ## attach to this variable "[module.nfs_server_sg.sg_id]"
 
   network_interfaces {
     subnet_id = var.subnet_id
     associate_public_ip_address = true
-    # security_groups = [aws_security_group.Web-Store-SG.id]
+    security_groups = var.security_group
   }
 
   placement {

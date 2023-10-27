@@ -13,6 +13,12 @@ resource "aws_backup_plan" "elfate7" {
       delete_after = 7
     }
   }
+  advanced_backup_setting {
+  backup_options = {
+    WindowsVSS = "enabled"
+  }
+  resource_type = "EC2"
+  }
 }
 
 resource "aws_iam_role" "backup_role" {
@@ -46,7 +52,7 @@ resource "aws_backup_selection" "efs_selection" {
     value = "True"
   }
 }
-
+/*
 resource "aws_backup_selection" "instance_selection_1" {
   name         = "instance_selection_1"
   iam_role_arn = aws_iam_role.backup_role.arn
@@ -62,3 +68,4 @@ resource "aws_backup_selection" "instance_selection_2" {
 
   resources   = var.instance_2_id
 }
+*/
